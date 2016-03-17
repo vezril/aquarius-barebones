@@ -17,4 +17,4 @@ iso:
 	rm -rf /tmp/aquarius
 
 clean:
-	rm *.o *.iso
+	rm *.o *.iso *.bin
