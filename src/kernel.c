@@ -72,6 +72,24 @@ void terminal_initialize() {
 	}
 }
 
+void terminal_scroll() {
+    for(size_t y=1;y<VGA_HEIGHT;y++){
+        for(size_t x=0;x<VGA_WIDTH;x++){
+            const size_t index = y * VGA_WIDTH + x;
+            const size_t prev_index = (y-1) * VGA_WIDTH + x;
+            terminal_buffer[prev_index] = terminal_buffer[index];
+
+            // if(y == VGA_HEIGHT-1)
+            //     terminal_buffer[index] = make_vgaentry(' ', terminal_color);
+        }
+    }
+    for(size_t x=0;x<VGA_WIDTH;x++){
+        size_t y = VGA_HEIGHT;
+        const size_t index = y * VGA_WIDTH + x;
+        terminal_buffer[index] = make_vgaentry(' ', terminal_color);
+    }
+}
+
 void terminal_setcolor(uint8_t color) {
 	terminal_color = color;
 }
@@ -82,6 +100,28 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 
 void terminal_putchar(char c) {
+    if(c == '\n'){
+        terminal_column = 0;
+        if(terminal_row < VGA_HEIGHT){
+            terminal_row++;
+        } else {
+            terminal_scroll();
+        }
+    } else {
+        terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+
+        if (terminal_column < VGA_WIDTH) {
+    		terminal_column++;
+        } else {
+            terminal_scroll();
+        }
+        if (++terminal_row == VGA_HEIGHT) {
+            terminal_row = 0;
+        }
+    }
+}
+
+void terminal_putchar_old(char c) {
     if(c == '\n'){
         terminal_column = 0;
         if (++terminal_row == VGA_HEIGHT) {
@@ -109,7 +149,6 @@ void terminal_writestring(const char* data) {
 extern "C" /* Use C linkage for kernel_main. */
 #endif
 void kernel_main() {
-    size_t num = 0;
 	/* Initialize terminal interface */
 	terminal_initialize();
 
