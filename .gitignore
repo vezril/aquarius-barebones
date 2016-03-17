@@ -4,6 +4,7 @@
 *.obj
 *.elf
 *.bin
+*.iso
 
 # Precompiled Headers
 *.gch

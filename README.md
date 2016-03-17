@@ -14,6 +14,6 @@ To build this we will integrate grub into the file. We will need `grub-mkrescue`
 ```shell
 $ mkdir -p /tmp/aquarius/boot/grub
 $ cp myos.bin /tmp/aquarius/boot/myos.bin
-$ cp boot/grub.cfg isodir/boot/grub/grub.cfg
-$ grub-mkrescue -o myos.iso isodir
+$ cp boot/grub.cfg /tmp/aquarius/boot/grub/grub.cfg
+$ grub-mkrescue -o myos.iso /tmp/aquarius
 ```
