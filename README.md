@@ -17,3 +17,17 @@ $ cp myos.bin /tmp/aquarius/boot/myos.bin
 $ cp boot/grub.cfg /tmp/aquarius/boot/grub/grub.cfg
 $ grub-mkrescue -o myos.iso /tmp/aquarius
 ```
+
+### Testing the OS with QEMU
+
+Simply do:
+
+```shell
+$ qemu-system-i386 -cdrom myos.iso
+```
+
+or
+
+```shell
+$ qemu-system-i386 -kernel myos.bin
+```
